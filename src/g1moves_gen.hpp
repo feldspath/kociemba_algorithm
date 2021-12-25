@@ -6,9 +6,9 @@
 class G1MoveGen {
 
 private:
-    std::array<std::array<unsigned short, 18>, 2187> corner_moves;
-    std::array<std::array<unsigned short, 18>, 2048> edges_moves;
-    std::array<std::array<unsigned short, 18>, 495> ud_moves;
+    std::array<std::array<unsigned short, 19>, 2187> corner_moves;
+    std::array<std::array<unsigned short, 19>, 2048> edges_moves;
+    std::array<std::array<unsigned short, 19>, 495> ud_moves;
 
     G1MoveGen();
 
@@ -20,4 +20,5 @@ public:
     unsigned short move_ud(unsigned short ud, Move move);
 
     void generate_moves();
+    void generate_moves_and_distances();
 };

@@ -11,9 +11,7 @@ int main() {
 
     G1 test(0, 0, 0);
     test.moved(test_man);
-
-    std::vector<G1Solve> g1_solves;
-    g1_solver(test, g1_solves);
+    g1_solver(test);
     
     return 0;
 }

@@ -49,3 +49,10 @@ public:
 
 bool operator==(const Move& lhs, const Move& rhs);
 bool operator!=(const Move& lhs, const Move& rhs);
+
+inline int Move::map_move(Move move) {
+    int face_id = static_cast<int>(move.face);
+    int dir = static_cast<int>(move.direction);
+    face_id = face_id > 0 ? face_id - 1 : -face_id + 2;
+    return face_id * 3 + dir - 1;
+}

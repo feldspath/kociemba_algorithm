@@ -17,7 +17,7 @@ static bool is_move_invalid(Move previous_move, Move current_move) {
     return  same_face || opposite_face;
 }
 
-void g1_solver(G1 initial_position, std::vector<G1Solve>& g1_solutions) {
+void g1_solver(G1 initial_position) {
     std::queue<G1Move> solving_queue;
     solving_queue.push(G1Move(Maneuver(), initial_position));
 
@@ -30,27 +30,12 @@ void g1_solver(G1 initial_position, std::vector<G1Solve>& g1_solutions) {
             if (is_move_invalid(last_move, move)) {
                 continue;
             }
-            
             G1Move next_g1_move = current_solve.move(move);
             solving_queue.push(next_g1_move);
             if (next_g1_move.g1_coords.is_g1()) {
-                //G1Solve next_solve(next_g1_move, initial_position);
-                // bool existing_position = false;
-                // for (const auto& solves : g1_solutions) {
-                //     if (solves.phase2_coord == next_solve.phase2_coord) {
-                //         existing_position = true;
-                //         break;
-                //     }
-                // }
-                // if (!existing_position) {
-                //     g1_solutions.push_back(next_solve);
-                // }
                 next_g1_move.current_moves.print();
                 std::cout << '\n';
-                //getchar();
-                //return;
             }
-            
         }
     }
 }

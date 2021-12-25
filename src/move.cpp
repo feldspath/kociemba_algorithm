@@ -50,13 +50,6 @@ const std::map<MoveFace, std::array<int, 4>> Move::affected_corners = {
     std::pair<MoveFace, std::array<int, 4>>(MoveFace::B, std::array<int, 4>{3, 2, 6, 7}),
 };
 
-int Move::map_move(Move move) {
-    int face_id = static_cast<int>(move.face);
-    int dir = static_cast<int>(move.direction);
-    face_id = face_id > 0 ? face_id - 1 : -face_id + 2;
-    return face_id * 3 + dir - 1;
-}
-
 Maneuver::Maneuver() : moves() {}
 
 static Move parse_move(std::string str) {

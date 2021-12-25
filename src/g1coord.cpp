@@ -111,7 +111,6 @@ void G1::moved(const Move move) {
 void G1::moved(const Maneuver& maneuver) {
     for (const auto& move : maneuver.moves) {
         moved(move);
-        print();
     }
 }
 
@@ -124,4 +123,11 @@ void G1::print() const {
     std::cout << "ud: " << ud_coord() << '\n';
     std::cout << "corners: " << corners_coord() << '\n';
     std::cout << "edges: " << edges_coord() << '\n';
+}
+
+unsigned short G1::solving_distance() const {
+    unsigned short max = G1MoveGen::get().ud_distance(ud);
+    max = std::max(max, G1MoveGen::get().corner_distance(corners));
+    max = std::max(max, G1MoveGen::get().edge_distance(edges));
+    return max;
 }

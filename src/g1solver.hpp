@@ -14,3 +14,4 @@ struct G1Move {
 };
 
 void g1_solver(G1 initial_position);
+void g1_ida(G1 initial_position);

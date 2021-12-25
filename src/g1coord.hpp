@@ -13,10 +13,6 @@ public:
     G1();
     G1(unsigned short corners, unsigned short edges, unsigned short ud);
 
-    unsigned short corners_coord() const;
-    unsigned short edges_coord() const;
-    unsigned short ud_coord() const;
-
     static unsigned short corners_coord(unsigned short corners);
     static unsigned short edges_coord(unsigned short edges);
     static unsigned short ud_coord(unsigned short ud);
@@ -24,6 +20,11 @@ public:
     static unsigned short corners_from_coord(unsigned short coord);
     static unsigned short edges_from_coord(unsigned short coord);
     static unsigned short ud_from_coord(unsigned short coord);
+
+    unsigned short corners_coord() const;
+    unsigned short edges_coord() const;
+    unsigned short ud_coord() const;
+    unsigned short solving_distance() const;
 
     G1 move(const Move move) const;
     void moved(const Move move);

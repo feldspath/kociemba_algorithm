@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+
 #include "move.hpp"
 #include "g1coord.hpp"
 

@@ -2,6 +2,7 @@
 #include <map>
 #include <iostream>
 #include <string>
+
 #include "move.hpp"
 
 Move::Move(MoveFace f, MoveDirection dir) : face(f), direction(dir) {}

@@ -1,12 +1,12 @@
-#include "move.hpp"
-#include "g1coord.hpp"
-#include "utility.hpp"
-#include "g1moves_gen.hpp"
-
 #include <array>
 #include <queue>
 #include <iostream>
 #include <functional>
+
+#include "move.hpp"
+#include "g1coord.hpp"
+#include "utility.hpp"
+#include "g1moves_gen.hpp"
 
 static unsigned short update_edges_rot(const unsigned short previous, const std::array<int, 4>& affected_edges, bool ignore_rot=false) {
     unsigned short new_edges = previous;

@@ -1,9 +1,9 @@
+#include <iostream>
+
 #include "g1coord.hpp"
 #include "move.hpp"
 #include "utility.hpp"
 #include "g1moves_gen.hpp"
-
-#include <iostream>
 
 G1::G1() : corners(0), edges(0), ud(0) {};
 G1::G1(unsigned short c, unsigned short e, unsigned short s) : corners(c), edges(e), ud(s) {};

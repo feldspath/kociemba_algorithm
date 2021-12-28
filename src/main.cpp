@@ -1,16 +1,44 @@
 #include <iostream>
 
-#include "g1coord.hpp"
-#include "g1solver.hpp"
+#include "p1coord.hpp"
+#include "p1solver.hpp"
 #include "move.hpp"
+#include "p2coord.hpp"
 
 int main() {
-    Maneuver test_man(std::string("R B2 U' L2 U2 B2 F2 R2 U L2 B2 L F2 R' D B L D2 U2 F2"));
-
-    G1 test(0, 0, 0);
-    test.moved(test_man);
-    printf("distance: %d\n", test.solving_distance());
-    g1_ida(test);
+    //Maneuver test_man(std::string("R B2 U' L2 U2 B2 F2 R2 U L2 B2 L F2 R' D B L D2 U2 F2"));
+    Maneuver test_man(std::string("R2 U"));
     
+
+    // P1Coord test(0, 0, 0);
+
+    P2Coord test(0, 0, 0);
+    test.moved(test_man);
+    test.print();
+
+    //g1_ida(test);
+
+
+    printf("corners coord: %x\n", test.corners_coord());
+    auto c = P2Coord::corners_from_coord(test.corners_coord());
+    for (auto v : c) {
+        std::cout << v << ' ';
+    }
+    std::cout << '\n';
+
+    printf("edges coord: %x\n", test.edges_coord());
+    auto e = P2Coord::edges_from_coord(test.edges_coord());
+    for (auto v : e) {
+        std::cout << v << ' ';
+    }
+    std::cout << '\n';
+
+    printf("ud coord: %x\n", test.ud_coord());
+    auto ud = P2Coord::ud_from_coord(test.ud_coord());
+    for (auto v : ud) {
+        std::cout << v << ' ';
+    }
+    std::cout << '\n';
+
     return 0;
 }

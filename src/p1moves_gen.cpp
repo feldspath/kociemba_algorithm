@@ -4,9 +4,9 @@
 #include <functional>
 
 #include "move.hpp"
-#include "g1coord.hpp"
+#include "p1coord.hpp"
 #include "utility.hpp"
-#include "g1moves_gen.hpp"
+#include "p1moves_gen.hpp"
 
 static unsigned short update_edges_rot(const unsigned short previous, const std::array<int, 4>& affected_edges, bool ignore_rot=false) {
     unsigned short new_edges = previous;
@@ -45,42 +45,42 @@ static unsigned short update_corners_rot(const unsigned short previous, const st
 }
 
 static unsigned short update_corners(unsigned short coord, Move move) {
-    unsigned short corners = G1::corners_from_coord(coord);
+    unsigned short corners = P1Coord::corners_from_coord(coord);
     bool ignore_rot = move.face == MoveFace::U || move.face == MoveFace::D;
     const auto& affected_corners = Move::affected_corners.at(move.face);
     unsigned short new_corners = corners;
     for (int i = 0; i < static_cast<int>(move.direction); ++i) {
         new_corners = update_corners_rot(new_corners, affected_corners, ignore_rot);
     }
-    return G1::corners_coord(new_corners);
+    return P1Coord::corners_coord(new_corners);
 }
 
 static unsigned short update_edges(unsigned short coord, Move move) {
-    unsigned short edges = G1::edges_from_coord(coord);
+    unsigned short edges = P1Coord::edges_from_coord(coord);
     bool ignore_rot = move.face == MoveFace::U || move.face == MoveFace::D || move.face == MoveFace::R || move.face == MoveFace::L;
     const auto& affected_edges = Move::affected_edges.at(move.face);
     unsigned short new_edges = edges;
     for (int i = 0; i < static_cast<int>(move.direction); ++i) {
         new_edges = update_edges_rot(new_edges, affected_edges, ignore_rot);
     }
-    return G1::edges_coord(new_edges);
+    return P1Coord::edges_coord(new_edges);
 }
 
 static unsigned short update_ud(unsigned short coord, Move move) {
-    unsigned short ud = G1::ud_from_coord(coord);
+    unsigned short ud = P1Coord::ud_from_coord(coord);
     const auto& affected_edges = Move::affected_edges.at(move.face);
     unsigned short new_ud = ud;
     for (int i = 0; i < static_cast<int>(move.direction); ++i) {
         new_ud = update_ud_slice(new_ud, affected_edges);
     }
-    return G1::ud_coord(new_ud);
+    return P1Coord::ud_coord(new_ud);
 }
 
 template <size_t N>
-static void explore_values(std::array<std::array<unsigned short, 19>, N>& piece_moves, std::function<unsigned short(unsigned short, Move)> move_function) {
+static void explore_values(std::array<std::array<unsigned short, N_MOVES+1>, N>& piece_moves, std::function<unsigned short(unsigned short, Move)> move_function) {
     std::queue<unsigned short> exploring;
     exploring.push((unsigned short)0);
-    piece_moves[0][18] = 0;
+    piece_moves[0].back() = 0;
     size_t count = 0;
     while (count < N) {
         const unsigned short values = exploring.front();
@@ -90,9 +90,9 @@ static void explore_values(std::array<std::array<unsigned short, 19>, N>& piece_
             const auto& move = Move::possible_moves[m];
             unsigned short new_values = move_function(values, move);
             piece_moves[values][m] = new_values;
-            if (piece_moves[new_values][18] != (unsigned short)-1) continue;
+            if (piece_moves[new_values].back() != (unsigned short)-1) continue;
             exploring.push(new_values);
-            piece_moves[new_values][18] = piece_moves[values][18]+1;
+            piece_moves[new_values].back() = piece_moves[values].back()+1;
         }
     }
 }
@@ -104,7 +104,7 @@ void G1MoveGen::generate_moves_and_distances() {
 }
 
 G1MoveGen::G1MoveGen() {
-    auto filler = std::array<unsigned short, 19>();
+    auto filler = std::array<unsigned short, N_MOVES+1>();
     filler.fill(-1);
     corner_moves.fill(filler);
     edge_moves.fill(filler);
@@ -118,28 +118,25 @@ G1MoveGen& G1MoveGen::get() {
 }
 
 unsigned short G1MoveGen::move_corners(unsigned short corner, Move move) const {
-    int move_index = Move::map_move(move);
-    return corner_moves[corner][move_index];
+    return corner_moves[corner][move.index()];
 }
 
 unsigned short G1MoveGen::move_edges(unsigned short edge, Move move) const {
-    int move_index = Move::map_move(move);
-    return edge_moves[edge][move_index];
+    return edge_moves[edge][move.index()];
 }
 
 unsigned short G1MoveGen::move_ud(unsigned short ud, Move move) const {
-    int move_index = Move::map_move(move);
-    return ud_moves[ud][move_index];
+    return ud_moves[ud][move.index()];
 }
 
 unsigned short G1MoveGen::corner_distance(unsigned short coord) const {
-    return corner_moves[coord][18];
+    return corner_moves[coord].back();
 }
 
 unsigned short G1MoveGen::edge_distance(unsigned short coord) const {
-    return edge_moves[coord][18];
+    return edge_moves[coord].back();
 }
 
 unsigned short G1MoveGen::ud_distance(unsigned short coord) const {
-    return ud_moves[coord][18];
+    return ud_moves[coord].back();
 }

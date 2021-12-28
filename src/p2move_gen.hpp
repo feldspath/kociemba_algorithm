@@ -5,17 +5,19 @@
 
 #include "move.hpp"
 
-class G1MoveGen {
+#define N_MOVES_P2 10
+
+class P2MoveGen {
 
 private:
-    std::array<std::array<unsigned short, 19>, 2187> corner_moves;
-    std::array<std::array<unsigned short, 19>, 2048> edge_moves;
-    std::array<std::array<unsigned short, 19>, 495> ud_moves;
+    std::array<std::array<unsigned short, N_MOVES_P2+1>, 40320> corner_moves;
+    std::array<std::array<unsigned short, N_MOVES_P2+1>, 40320> edge_moves;
+    std::array<std::array<unsigned short, N_MOVES_P2+1>, 24> ud_moves;
 
-    G1MoveGen();
+    P2MoveGen();
 
 public:
-    static G1MoveGen& get();
+    static P2MoveGen& get();
 
     unsigned short move_corners(unsigned short corner, Move move) const;
     unsigned short move_edges(unsigned short edge, Move move) const;

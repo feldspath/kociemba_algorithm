@@ -1,14 +1,14 @@
 #include <iostream>
 
-#include "g1coord.hpp"
+#include "p1coord.hpp"
 #include "move.hpp"
 #include "utility.hpp"
-#include "g1moves_gen.hpp"
+#include "p1moves_gen.hpp"
 
-G1::G1() : corners(0), edges(0), ud(0) {};
-G1::G1(unsigned short c, unsigned short e, unsigned short s) : corners(c), edges(e), ud(s) {};
+P1Coord::P1Coord() : corners(0), edges(0), ud(0) {};
+P1Coord::P1Coord(unsigned short c, unsigned short e, unsigned short s) : corners(c), edges(e), ud(s) {};
 
-unsigned short G1::corners_coord(unsigned short corners) {
+unsigned short P1Coord::corners_coord(unsigned short corners) {
     unsigned short coord = 0;
     int multiplier = 1;
     for (int c = 1; c < N_CORNERS; ++c) {
@@ -19,11 +19,11 @@ unsigned short G1::corners_coord(unsigned short corners) {
     return coord;
 }
 
-unsigned short G1::edges_coord(unsigned short edges) {
+unsigned short P1Coord::edges_coord(unsigned short edges) {
     return edges >> 1;
 }
 
-unsigned short G1::ud_coord(unsigned short ud) {
+unsigned short P1Coord::ud_coord(unsigned short ud) {
     unsigned short coord = 0;
     int k = 3;
     for (int e = 0; e < N_EDGES; ++e) {
@@ -41,7 +41,7 @@ unsigned short G1::ud_coord(unsigned short ud) {
     return coord;
 }
 
-unsigned short G1::corners_from_coord(unsigned short coord) {
+unsigned short P1Coord::corners_from_coord(unsigned short coord) {
     unsigned short corners = 0;
     int rot_sum = 0;
     for (int c = 1; c < N_CORNERS; ++c) {
@@ -55,7 +55,7 @@ unsigned short G1::corners_from_coord(unsigned short coord) {
     return corners;
 }
 
-unsigned short G1::edges_from_coord(unsigned short coord) {
+unsigned short P1Coord::edges_from_coord(unsigned short coord) {
     unsigned short sum = 0;
     for (int i = 0; i < N_EDGES; ++i) {
         sum ^= (coord >> i) & 1U;
@@ -63,7 +63,7 @@ unsigned short G1::edges_from_coord(unsigned short coord) {
     return (coord << 1) | sum;
 }
 
-unsigned short G1::ud_from_coord(unsigned short coord) {
+unsigned short P1Coord::ud_from_coord(unsigned short coord) {
     unsigned short ud = 0;
     int n = N_EDGES - 1;
     int k = 3;
@@ -82,50 +82,50 @@ unsigned short G1::ud_from_coord(unsigned short coord) {
     return ud;
 }
 
-unsigned short G1::corners_coord() const {
+unsigned short P1Coord::corners_coord() const {
     return corners;
 }
 
-unsigned short G1::edges_coord() const {
+unsigned short P1Coord::edges_coord() const {
     return edges;
 }
 
-unsigned short G1::ud_coord() const {
+unsigned short P1Coord::ud_coord() const {
     return ud;
 }
 
-G1 G1::move(const Move move) const {
+P1Coord P1Coord::move(const Move move) const {
     unsigned short new_edges = G1MoveGen::get().move_edges(edges, move);
     unsigned short new_ud = G1MoveGen::get().move_ud(ud, move);
     unsigned short new_corners = G1MoveGen::get().move_corners(corners, move);
-    return G1(new_corners, new_edges, new_ud);
+    return P1Coord(new_corners, new_edges, new_ud);
 }
 
-void G1::moved(const Move move) {
-    G1 new_g1 = this->move(move);
+void P1Coord::moved(const Move move) {
+    P1Coord new_g1 = this->move(move);
     this->edges = new_g1.edges;
     this->corners = new_g1.corners;
     this->ud = new_g1.ud;
 }
 
-void G1::moved(const Maneuver& maneuver) {
+void P1Coord::moved(const Maneuver& maneuver) {
     for (const auto& move : maneuver.moves) {
         moved(move);
     }
 }
 
-bool G1::is_g1() const {
-    return (corners == 0 && edges == 0 && ud == 0);
+bool P1Coord::is_g1() const {
+    return corners == 0 && edges == 0 && ud == 0;
 }
 
-void G1::print() const {
+void P1Coord::print() const {
     std::cout << "G1 coords:\n";
     std::cout << "ud: " << ud_coord() << '\n';
     std::cout << "corners: " << corners_coord() << '\n';
     std::cout << "edges: " << edges_coord() << '\n';
 }
 
-unsigned short G1::solving_distance() const {
+unsigned short P1Coord::solving_distance() const {
     unsigned short max = G1MoveGen::get().ud_distance(ud);
     max = std::max(max, G1MoveGen::get().corner_distance(corners));
     max = std::max(max, G1MoveGen::get().edge_distance(edges));

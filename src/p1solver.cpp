@@ -3,11 +3,11 @@
 #include <stack>
 #include <iostream>
 
-#include "g1solver.hpp"
+#include "p1solver.hpp"
 #include "position.hpp"
 #include "move.hpp"
 
-G1Move::G1Move(Maneuver maneuver, G1 coords) : current_moves(maneuver), g1_coords(coords) {}
+G1Move::G1Move(Maneuver maneuver, P1Coord coords) : current_moves(maneuver), g1_coords(coords) {}
 
 static bool is_move_invalid(Move previous_move, Move current_move) {
     if (previous_move == Move::none) {
@@ -18,7 +18,7 @@ static bool is_move_invalid(Move previous_move, Move current_move) {
     return same_face || opposite_face;
 }
 
-void g1_ida(G1 initial_position) {
+void g1_ida(P1Coord initial_position) {
     std::stack<G1Move> solving;
     solving.push(G1Move(Maneuver(), initial_position));
 
@@ -51,7 +51,7 @@ void g1_ida(G1 initial_position) {
     }
 }
 
-void g1_solver(G1 initial_position) {
+void g1_solver(P1Coord initial_position) {
     std::queue<G1Move> solving_queue;
     solving_queue.push(G1Move(Maneuver(), initial_position));
 

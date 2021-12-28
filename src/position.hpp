@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "move.hpp"
-#include "g1coord.hpp"
+#include "p1coord.hpp"
 
 /*
  * EDGE INDEXING
@@ -34,5 +34,5 @@ private:
 public:
     Position(unsigned long edge_pos, unsigned int corner_pos, unsigned short edge_or, unsigned short corner_or);
 
-    G1 g1_coord() const;
+    P1Coord p1_coord() const;
 };
